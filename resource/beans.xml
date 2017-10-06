@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- 组件自动扫描 -->
+	<context:component-scan base-package="com">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<!-- 加载properties属性文件 -->
+	<context:property-placeholder location="classpath*:conf.properties"/>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="url" value="${jdbc.url}"/>
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+
+	<!-- 集成hibernate框架 -->
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+
+		<property name="packagesToScan" value="com.sicdlib.dto"/>
+
+		<!--<property name="mappingLocations" value="classpath:com/sicdlib/dto/*.hbm.xml"/>-->
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hbm2ddl.auto">update</prop>
+				<prop key="show_sql">true</prop>
+				<prop key="format_sql">true</prop>
+				<prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.connection.url">jdbc:mysql://115.154.137.89:3306/socialMind</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.jdbc.batch_size">20</prop>
+            </props>
+		</property>
+
+		<property name="namingStrategy">
+			<bean class="org.hibernate.cfg.ImprovedNamingStrategy"/>
+		</property>
+	</bean>
+
+	<!-- 事务配置 -->
+	<bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<tx:annotation-driven transaction-manager="txManager"/>
+
+	<!-- JSR303 验证 -->
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+	<!-- PHO Beans -->
+	<!-- Register your entity bean here -->
+	<util:list id="entityPropertiesMappings">
+		<value>com.sicdlib.dto.phoenixEntity.SpiderInfoEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSChinaAuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSChinaCommentEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSChinaPostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSMopAuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSMopCommentEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSMopFansEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSMopPostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSNewsAuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSNewsCommentEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSNewsFansEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSNewsPostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSPeopleAuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSPeoplePostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSSohuAuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSSohuCommentEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSSohuFansEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSSohuPostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSTianyaAuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSTianyaFansEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSTianyaPostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSXiciCommentEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BBSXiciPostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.Blog163AuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.Blog163CommentEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.Blog163PostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BlogChinaAuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BlogChinaBlogEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BlogChinaCommentEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BlogSinaAuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.BlogSinaPostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.DoubanGroupAuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.DoubanGroupCommentEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.DoubanGroupGroupEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.DoubanGroupPostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.KdnetAuthorEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.KdnetCommentEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.KdnetFansEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.KdnetPostEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.MoeDataEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.MoeNewsEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.XinhuaNewsEntity</value>
+		<value>com.sicdlib.dto.phoenixEntity.TbTableEntity</value>
+	</util:list>
+
+	<bean id="entityPropertiesMappingContext" class="com.eharmony.pho.mapper.EntityPropertiesMappingContext">
+		<constructor-arg ref="entityPropertiesMappings"/>
+	</bean>
+
+	<bean id="entityPropertiesResolver" class="com.eharmony.pho.mapper.EntityPropertiesResolver">
+		<constructor-arg ref="entityPropertiesMappingContext"/>
+	</bean>
+
+	<bean id="phoenixHBaseQueryTranslator" class="com.eharmony.pho.hbase.translator.PhoenixHBaseQueryTranslator">
+		<constructor-arg name="propertyResolver" ref="entityPropertiesResolver" />
+	</bean>
+
+	<bean id="phoenixProjectedResultMapper" class="com.eharmony.pho.hbase.mapper.PhoenixProjectedResultMapper">
+		<constructor-arg name="entityPropertiesResolver" ref="entityPropertiesResolver" />
+	</bean>
+
+	<bean id="phoenixHBaseQueryExecutor" class="com.eharmony.pho.hbase.query.PhoenixHBaseQueryExecutor">
+		<constructor-arg name="queryTranslator" ref="phoenixHBaseQueryTranslator"/>
+		<constructor-arg name="resultMapper" ref="phoenixProjectedResultMapper" />
+	</bean>
+
+	<bean id="dataStoreApi" class="com.eharmony.pho.hbase.PhoenixHBaseDataStoreApiImpl">
+		<constructor-arg name="connectionUrl" value="${hbase.connection.url}"/>
+		<constructor-arg name="queryExecutor" ref="phoenixHBaseQueryExecutor"/>
+	</bean>
+</beans>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib_algorithm">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib_algorithm/IKAnalyzer-2012FF_u1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib_algorithm/jna-4.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
